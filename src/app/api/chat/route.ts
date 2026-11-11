@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   // Retrieval: use the previous student question too, so follow-ups like "and their link?" still match.
   const previousQuestion = [...history].reverse().find((t) => t.role === "user")?.content ?? "";
-  const retrieved = retrieve(`${message} ${previousQuestion}`, 5);
+  const retrieved = retrieve(`${message} ${previousQuestion}`, 6);
 
   try {
     const result = await generateAnswer(retrieved, [...history.slice(-6), { role: "user", content: message }]);

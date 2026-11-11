@@ -52,8 +52,8 @@ const CATEGORIES: { label: string; icon: LucideIcon; question: string }[] = [
 const STARTERS = [
   "My room has a problem. Where do I complain?",
   "What is the exact date of my next examination?",
-  "Where is the campus located?",
-  "When does the library close?",
+  "Which companies visit for placements?",
+  "When does the library close on Saturdays?",
 ];
 
 const MAX_LENGTH = 500;
@@ -76,6 +76,7 @@ export default function Helpdesk() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    if (messages.length === 0 && !loading && !error) return;
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, loading, error]);
 
@@ -153,12 +154,10 @@ export default function Helpdesk() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            <BookOpen size={20} strokeWidth={2} />
-          </span>
+          <img className="brand-logo" src="/pu-footer-logo.png" alt="Presidency University" width={350} height={88} />
           <div className="brand-text">
-            <span className="brand-name">CampusDesk AI</span>
-            <span className="brand-sub">Presidency University student helpdesk</span>
+            <span className="brand-name">AI Campus Helpdesk</span>
+            <span className="brand-sub">Ask, learn, get help</span>
           </div>
         </div>
         <button type="button" className="btn btn-ghost" aria-label="Clear chat" onClick={clearChat} disabled={isEmpty && !error}>
@@ -202,6 +201,18 @@ export default function Helpdesk() {
                   Ask in your own words. Every answer is grounded in the university information this helpdesk holds, and it will
                   tell you plainly when something is not available.
                 </p>
+                <div className="cards">
+                  {CATEGORIES.map(({ label, icon: Icon, question }) => (
+                    <button key={label} type="button" className="card" onClick={() => ask(question)} disabled={loading}>
+                      <span className="card-icon" aria-hidden="true">
+                        <Icon size={20} strokeWidth={1.9} />
+                      </span>
+                      <span className="card-label">{label}</span>
+                      <span className="card-q">{question}</span>
+                    </button>
+                  ))}
+                </div>
+                <p className="try">Or try one of these</p>
                 <div className="starters">
                   {STARTERS.map((q) => (
                     <button key={q} type="button" className="starter" onClick={() => ask(q)} disabled={loading}>
@@ -214,6 +225,11 @@ export default function Helpdesk() {
 
             {messages.map((m) => (
               <article key={m.id} className={`msg msg-${m.role}`}>
+                {m.role === "assistant" && (
+                  <span className="avatar" aria-hidden="true">
+                    <BookOpen size={16} strokeWidth={2} />
+                  </span>
+                )}
                 <div className="bubble">
                   {m.role === "assistant" && (
                     <div className="meta">

@@ -35,7 +35,7 @@ Two clearly separated parts:
 | Part | What it is | How it is used |
 |---|---|---|
 | Sample data (S1–S8) | The 8 facts from the official problem statement | Primary source; always in the model's context |
-| Website data (W1–W8) | Facts and page links taken from the public home page of presidencyuniversity.in on 11 Nov 2026 (address, listed phone numbers, schools, section links) | Supplementary; included only when the retriever ranks it relevant, and labelled "University website" in the UI |
+| Website data (W1–W13) | Facts taken from public pages of presidencyuniversity.in on 11 Nov 2026: contact details, schools, examination cell and grading, placement training, library timings and services, hostel facilities | Supplementary; included only when the retriever ranks it relevant, and labelled "University website" in the UI |
 
 The sample data is competition data, not an official statement of university regulations.
 
@@ -87,7 +87,7 @@ Open http://localhost:3000.
 
 ## Limitations
 
-- The retriever is lexical (BM25), not embedding-based; with a 16-chunk corpus this is sufficient and needs no extra service.
+- The retriever is lexical (BM25), not embedding-based; with a 21-chunk corpus this is sufficient and needs no extra service.
 - Website data is a small snapshot, not a live crawl.
 - Conversations are kept in the browser session only.
 
@@ -95,3 +95,5 @@ Open http://localhost:3000.
 
 - Runtime: Azure AI Foundry chat model (see above).
 - Development: Claude Code (Anthropic) was used to help write the code.
+
+The Presidency University logo is loaded from the university's own website assets and belongs to the university; it is used here only for this campus competition prototype.

@@ -643,3 +643,139 @@ textarea {
     flex-wrap: wrap;
   }
 }
+
+/* Brand logo, topic cards and assistant avatar */
+.brand-logo {
+  height: 36px;
+  width: auto;
+  flex: none;
+}
+
+.brand-text {
+  padding-left: 14px;
+  border-left: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.card:hover:not(:disabled) {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.card:disabled,
+.starter:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.card-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--primary);
+}
+
+.card-label {
+  font-size: 14.5px;
+  font-weight: 620;
+  color: var(--navy);
+}
+
+.card-q {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.try {
+  margin: 22px 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.msg-assistant {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 10px;
+  justify-items: start;
+}
+
+.msg-assistant .time {
+  grid-column: 2;
+}
+
+.msg-assistant.no-avatar .bubble,
+.msg-assistant > .bubble:first-child {
+  grid-column: 2;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+}
+
+@media (max-width: 1080px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .brand-logo {
+    height: 28px;
+  }
+
+  .brand-text {
+    padding-left: 10px;
+  }
+
+  .brand-name {
+    font-size: 14px;
+  }
+
+  .card-q {
+    display: none;
+  }
+
+  .card {
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

@@ -80,77 +80,115 @@ export const SAMPLE_CHUNKS: Chunk[] = [
   },
 ];
 
-const SITE = "https://presidencyuniversity.in/";
-
 /**
- * Supplementary corpus retrieved from the public university website (home page, 11 Nov 2026).
- * Only text that actually appears on the site is stored here.
+ * Supplementary corpus taken from public pages of presidencyuniversity.in (fetched 11 Nov 2026).
+ * Only facts that appear on those pages are stored here.
  */
 export const WEBSITE_CHUNKS: Chunk[] = [
   {
-    id: "W1",
-    category: "General",
-    origin: "website",
-    text: "Presidency University campus address: Rajanukunte, Yelahanka, Bengaluru, Karnataka, Pin: 560119, India.",
-    keywords: "address location where campus situated located city map reach directions bengaluru bangalore",
-    url: SITE,
+    "id": "W1",
+    "category": "General",
+    "origin": "website",
+    "text": "Presidency University main campus address: Rajanukunte, Yelahanka, Bengaluru, Karnataka, Pin: 560119, India. City office: University House, 8/1, King Street, Richmond Town, Bengaluru, Pin: 560025.",
+    "keywords": "address location where campus situated located city office map reach directions bengaluru bangalore",
+    "url": "https://presidencyuniversity.in/contact"
   },
   {
-    id: "W2",
-    category: "General",
-    origin: "website",
-    text: "Phone numbers listed on the university website: admission enquiries +91 9022092222; other related queries +91 080-23093500. Admission email: admission@presidencyuniversity.in.",
-    keywords: "phone number call contact telephone email mail enquiry admission admissions helpline reach",
-    url: SITE,
+    "id": "W2",
+    "category": "General",
+    "origin": "website",
+    "text": "Contact details on the university website: University board line +91 080-23093500 and +91 080-44787350. Admission enquiries +91 9022092222 and +91 9024060000. General email info@presidencyuniversity.in. Admission email admission@presidencyuniversity.in.",
+    "keywords": "phone number call contact telephone email mail enquiry admission admissions helpline reach board line general",
+    "url": "https://presidencyuniversity.in/contact"
   },
   {
-    id: "W3",
-    category: "Academics",
-    origin: "website",
-    text: "Schools listed on the university website: Computer Science and Engineering; Engineering; Information Science; Management; Commerce; Law; Design; Media Studies; Liberal Arts and Sciences; Allied and Healthcare Professions; Artificial Intelligence and Advanced Computing.",
-    keywords: "school schools department departments programmes programs courses branches streams offered engineering law management design",
-    url: SITE,
+    "id": "W3",
+    "category": "Academics",
+    "origin": "website",
+    "text": "Schools listed on the university website: Computer Science and Engineering; Engineering; Information Science; Management; Commerce; Law; Design; Media Studies; Liberal Arts and Sciences; Allied and Healthcare Professions; Artificial Intelligence and Advanced Computing.",
+    "keywords": "school schools department departments programmes programs courses branches streams offered engineering law management design",
+    "url": "https://presidencyuniversity.in/"
   },
   {
-    id: "W4",
-    category: "Examinations",
-    origin: "website",
-    text: "The university website has an Examinations section at https://presidencyuniversity.in/academics/examinations.",
-    keywords: "exam examination timetable notification website link page official channel online",
-    url: "https://presidencyuniversity.in/academics/examinations",
+    "id": "W4",
+    "category": "Examinations",
+    "origin": "website",
+    "text": "According to the university website, the Examination Cell handles examination administration and the Controller of Examinations oversees digital valuation. Mr. Chandrashekhar Ingle is listed as Controller of Examinations. Assessment types listed: end-term, mid-term, quizzes, summer term and improvement examinations.",
+    "keywords": "exam examination cell controller coe who runs conducts incharge head assessment types midterm endterm quiz summer improvement makeup",
+    "url": "https://presidencyuniversity.in/academics/examinations"
   },
   {
-    id: "W5",
-    category: "Placements",
-    origin: "website",
-    text: "The university website has a Placements section at https://presidencyuniversity.in/placements/placement-overview. It states that a dedicated learning and development team of 18 trainers runs student training with the support of hired professional organizations.",
-    keywords: "placement training trainers website link page overview learning development career",
-    url: "https://presidencyuniversity.in/placements/placement-overview",
+    "id": "W5",
+    "category": "Examinations",
+    "origin": "website",
+    "text": "According to the university website, results (semester-wise results, grade review outcomes, make-up and summer term results) are published mainly through the Linways portal under Controller of Examinations, View Results. Notifications such as make-up examination registration, admit cards and end-term notices are posted on the Examinations page, which also links to a Time Table page. The page does not list individual exam dates.",
+    "keywords": "exam result results marks portal linways admit card hall ticket notification timetable time table schedule makeup where check view online",
+    "url": "https://presidencyuniversity.in/academics/examinations"
   },
   {
-    id: "W6",
-    category: "Library",
-    origin: "website",
-    text: "The university library has its own website at https://library.presidencyuniversity.in/.",
-    keywords: "library website link page online catalogue portal books",
-    url: "https://library.presidencyuniversity.in/",
+    "id": "W6",
+    "category": "Examinations",
+    "origin": "website",
+    "text": "According to the university website, the university uses a digital valuation system and a relative grading system benchmarked against the class average. Review of grades applies only to theory courses. Document verification costs Rs. 1000 per verification request, payable before processing.",
+    "keywords": "grading grade grades relative evaluation valuation revaluation review recheck verification fee document cgpa marks",
+    "url": "https://presidencyuniversity.in/academics/examinations"
   },
   {
-    id: "W7",
-    category: "Hostel",
-    origin: "website",
-    text: "Student hostel facilities are described on the university website at https://presidencyuniversity.in/student-life/student-hostel-facilities.",
-    keywords: "hostel facilities accommodation website link page rooms student life",
-    url: "https://presidencyuniversity.in/student-life/student-hostel-facilities",
+    "id": "W7",
+    "category": "Placements",
+    "origin": "website",
+    "text": "According to the university website, placement preparation includes certifications in AI, Data Science, Cybersecurity and Digital Marketing, aptitude sessions, soft skills classes, pre-placement sessions and mock interviews, with personalised placement support for every eligible student through the final year. Both on-campus and virtual placement drives are held. A learning and development team of 18 trainers runs student training.",
+    "keywords": "placement training trainers aptitude soft skills mock interview certification drive drives career preparation support resume internship",
+    "url": "https://presidencyuniversity.in/placements/placement-overview"
   },
   {
-    id: "W8",
-    category: "Administration",
-    origin: "website",
-    text: "The university website has a Contact page at https://presidencyuniversity.in/contact and links to an online student helpdesk portal at https://presidencyuniversity.linways.com/.",
-    keywords: "contact page portal helpdesk linways online student login office administration website link",
-    url: "https://presidencyuniversity.in/contact",
+    "id": "W8",
+    "category": "Placements",
+    "origin": "website",
+    "text": "Recruiters named in student testimonials on the university website include Tata Electronics, Capgemini, BNP Paribas, OpenText, Clarivate, Rakuten, KPMG, Deloitte and Quest Global. The website does not list a placement-specific phone number or email.",
+    "keywords": "placement companies company recruiters recruiter hiring visit who comes jobs offers contact email",
+    "url": "https://presidencyuniversity.in/placements/placement-overview"
   },
+  {
+    "id": "W9",
+    "category": "Library",
+    "origin": "website",
+    "text": "Library timings on the library website: Monday to Saturday 8:30 AM to 6:30 PM, with issue and return from 9:00 AM to 5:30 PM. On the 1st and 3rd Saturday it is open 8:30 AM to 4:30 PM. Closed on Sundays and university-declared holidays. Timings may vary during exams and holidays.",
+    "keywords": "library timings timing hours open opens close closes closing time when sunday saturday holiday issue return working",
+    "url": "https://library.presidencyuniversity.in/"
+  },
+  {
+    "id": "W10",
+    "category": "Library",
+    "origin": "website",
+    "text": "According to the library website, services include borrowing, digital resources, scanning, OPAC catalogue search and research support (plagiarism checking, reference management tools, citation guidance). E-resources are available through EBSCO, Knimbus and PULOAR. To borrow, registered members present their University ID card at the circulation desk. Loan limits and durations depend on member category and are not listed.",
+    "keywords": "library book books borrow issue borrowing limit how many ebook ejournal journal database research plagiarism opac catalogue id card services resources",
+    "url": "https://library.presidencyuniversity.in/"
+  },
+  {
+    "id": "W11",
+    "category": "Hostel",
+    "origin": "website",
+    "text": "According to the university website, there are three hostels for boys and girls, with twin-shared and triple-shared rooms furnished with bed cots, study table and chairs, cupboards and free Wi-Fi. Amenities include a dining area, laundry rooms, common rooms with TV, indoor and outdoor games and purified drinking water. Vegetarian and non-vegetarian meals are served four times a day.",
+    "keywords": "hostel room rooms sharing facilities accommodation wifi mess food meals laundry amenities stay furniture types",
+    "url": "https://presidencyuniversity.in/student-life/student-hostel-facilities"
+  },
+  {
+    "id": "W12",
+    "category": "Hostel",
+    "origin": "website",
+    "text": "According to the university website, hostels have round-the-clock security with guards and CCTV. The girls hostel has four wardens under a resident officer and each boys hostel has two wardens; all hostels come under the student housing department. Each hostel has a medical room with a nurse available at night. Hostel allotment is first-come, first-served with random room allotment, and cannot be changed once made. Hostel fees and the complaint procedure are not listed on the page.",
+    "keywords": "hostel warden wardens security safety cctv medical nurse emergency allotment allot change room fee fees housing department registration apply",
+    "url": "https://presidencyuniversity.in/student-life/student-hostel-facilities"
+  },
+  {
+    "id": "W13",
+    "category": "Administration",
+    "origin": "website",
+    "text": "The university website has a Contact page and links to an online student portal (Linways) at https://presidencyuniversity.linways.com/. For general queries the listed board line is +91 080-23093500 and the general email is info@presidencyuniversity.in.",
+    "keywords": "contact page portal helpdesk linways online student login office administration website link certificate records general query",
+    "url": "https://presidencyuniversity.in/contact"
+  }
 ];
 
 export const ALL_CHUNKS: Chunk[] = [...SAMPLE_CHUNKS, ...WEBSITE_CHUNKS];
