@@ -430,9 +430,31 @@
 /* Hero photograph */
 .hero {
   background:
-    linear-gradient(100deg, rgba(15, 42, 71, 0.94) 0%, rgba(15, 42, 71, 0.82) 45%, rgba(15, 42, 71, 0.45) 100%),
-    url("/campus.webp") center / cover no-repeat,
+    linear-gradient(95deg, rgba(15, 42, 71, 0.9) 0%, rgba(15, 42, 71, 0.72) 34%, rgba(15, 42, 71, 0.18) 62%, rgba(15, 42, 71, 0) 100%),
+    url("/campus.webp") right center / cover no-repeat,
     var(--navy);
+}
+
+.hero-inner {
+  min-height: clamp(380px, 46vw, 520px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero h1,
+.hero-lead {
+  text-shadow: 0 1px 12px rgba(10, 26, 46, 0.55);
+}
+
+/* On narrow screens the text covers the whole photo, so keep a stronger even tint for contrast. */
+@media (max-width: 760px) {
+  .hero {
+    background:
+      linear-gradient(180deg, rgba(15, 42, 71, 0.82) 0%, rgba(15, 42, 71, 0.7) 100%),
+      url("/campus.webp") center / cover no-repeat,
+      var(--navy);
+  }
 }
 
 @media (max-width: 900px) {
