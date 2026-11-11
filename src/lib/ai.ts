@@ -96,7 +96,7 @@ async function callFoundry(p: ProviderConfig, system: string, turns: ChatTurn[])
   }
   const body = anthropic
     ? { model: p.model, max_tokens: 600, system, messages: turns }
-    : { model: p.model, messages: [{ role: "system", content: system }, ...turns] };
+    : { model: p.model, response_format: { type: "json_object" }, messages: [{ role: "system", content: system }, ...turns] };
 
   let res: Response;
   try {
@@ -150,6 +150,9 @@ export async function generateAnswer(
   turns: ChatTurn[],
 ): Promise<ModelAnswer & { model: string }> {
   const provider = getProvider();
-  const raw = await callFoundry(provider, buildSystemPrompt(retrieved), turns);
+  // Earlier assistant turns are re-sent in the same JSON shape the model must produce,
+  // otherwise it copies the plain-text style of the history and drops category and sources.
+  const shaped = turns.map((t) => (t.role === "assistant" ? { ...t, content: JSON.stringify({ answer: t.content }) } : t));
+  const raw = await callFoundry(provider, buildSystemPrompt(retrieved), shaped);
   return { ...parseAnswer(raw), model: provider.model };
 }
