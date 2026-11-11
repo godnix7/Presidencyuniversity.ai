@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { getSupabase, useUser } from "@/lib/supabase";
+import { LogoutButton } from "@/components/AccountLinks";
 import {
   AlertCircle,
   BookOpen,
@@ -255,6 +256,7 @@ export default function Helpdesk({ initialQuestion, conversationId }: Props) {
               {user ? "Dashboard" : "Log in"}
             </Link>
           )}
+          {user && <LogoutButton />}
           <button
             type="button"
             className="btn btn-ghost"

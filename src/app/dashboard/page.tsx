@@ -11,11 +11,11 @@ import {
   GraduationCap,
   History,
   Loader2,
-  LogOut,
   MessageSquarePlus,
   MessageSquareText,
   Trash2,
 } from "lucide-react";
+import { LogoutButton } from "@/components/AccountLinks";
 import { displayName, getSupabase, useUser, type ConversationRow } from "@/lib/supabase";
 
 const QUICK_ACTIONS = [
@@ -68,11 +68,6 @@ export default function DashboardPage() {
     void loadConversations();
   }, [user, loadConversations]);
 
-  async function logOut() {
-    await getSupabase()?.auth.signOut();
-    router.replace("/");
-  }
-
   async function saveName(e: FormEvent) {
     e.preventDefault();
     const supabase = getSupabase();
@@ -114,10 +109,7 @@ export default function DashboardPage() {
         </Link>
         <nav aria-label="Account">
           <Link href="/helpdesk">Helpdesk</Link>
-          <button type="button" className="btn btn-ghost" onClick={logOut}>
-            <LogOut size={16} aria-hidden="true" />
-            <span>Log out</span>
-          </button>
+          <LogoutButton />
         </nav>
       </header>
 
