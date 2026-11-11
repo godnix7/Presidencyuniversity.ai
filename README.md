@@ -16,7 +16,7 @@ Students ask campus questions in plain language and get short, clear answers tha
 
 ## How AI is integrated
 
-**Model/API:** a chat model deployed on **Azure AI Foundry**, called from the server through its chat-completions endpoint. The deployment name is set in `FOUNDRY_MODEL`.
+**Model/API:** **GPT-4.1 mini** (`gpt-4.1-mini`) deployed on **Azure AI Foundry**, called from the server through its chat-completions endpoint. The deployment name is set in `FOUNDRY_MODEL`.
 
 Pipeline for every question (`POST /api/chat`):
 
@@ -93,7 +93,7 @@ Open http://localhost:3000.
 
 ## AI tools disclosure
 
-- Runtime: Azure AI Foundry chat model (see above).
+- Runtime: GPT-4.1 mini on Azure AI Foundry (see above).
 - Development: Claude Code (Anthropic) was used to help write the code.
 
 The Presidency University logo is loaded from the university's own website assets and belongs to the university; it is used here only for this campus competition prototype.

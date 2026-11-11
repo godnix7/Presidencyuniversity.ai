@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { AiConfigError, AiProviderError, generateAnswer } from "@/lib/ai";
+import { AiConfigError, AiFilteredError, AiProviderError, generateAnswer } from "@/lib/ai";
 import { findChunk, retrieve } from "@/lib/knowledge";
 
 const requestSchema = z.object({
@@ -44,6 +44,17 @@ export async function POST(request: Request) {
       model: result.model,
     });
   } catch (error) {
+    if (error instanceof AiFilteredError) {
+      // The model never ran, so this is a fixed notice, not a generated answer.
+      return NextResponse.json({
+        answer:
+          "I can’t act on that request: the AI safety filter flagged it as an attempt to override my instructions. I only answer from the campus information I hold and I never make up details. Please ask your question in a different way.",
+        category: "Out of scope",
+        answerable: false,
+        sources: [],
+        model: "safety filter",
+      });
+    }
     if (error instanceof AiConfigError) return NextResponse.json({ error: error.message }, { status: 503 });
     if (error instanceof AiProviderError) return NextResponse.json({ error: error.message }, { status: 502 });
     console.error(error);
