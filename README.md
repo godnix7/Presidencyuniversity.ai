@@ -72,7 +72,7 @@ FOUNDRY_MODEL=      # deployment name
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open http://localhost:3000 for the homepage; the chat is at /helpdesk.
 
 ## Example questions
 

@@ -66,7 +66,7 @@ function newId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-export default function Helpdesk() {
+export default function Helpdesk({ initialQuestion }: { initialQuestion?: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,6 +74,7 @@ export default function Helpdesk() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const askedInitial = useRef(false);
 
   useEffect(() => {
     if (messages.length === 0 && !loading && !error) return;
@@ -134,6 +135,14 @@ export default function Helpdesk() {
     void requestAnswer(next);
   }
 
+  // A topic chosen on the homepage arrives as ?q=... and is asked once.
+  useEffect(() => {
+    if (!initialQuestion || askedInitial.current) return;
+    askedInitial.current = true;
+    ask(initialQuestion);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuestion]);
+
   function retry() {
     if (loading || messages.length === 0 || messages[messages.length - 1].role !== "user") return;
     void requestAnswer(messages);
@@ -153,13 +162,13 @@ export default function Helpdesk() {
   return (
     <div className="app">
       <header className="topbar">
-        <div className="brand">
+        <a className="brand" href="/" title="Back to home">
           <img className="brand-logo" src="/pu-footer-logo.png" alt="Presidency University" width={350} height={88} />
           <div className="brand-text">
             <span className="brand-name">AI Campus Helpdesk</span>
             <span className="brand-sub">Ask, learn, get help</span>
           </div>
-        </div>
+        </a>
         <button type="button" className="btn btn-ghost" aria-label="Clear chat" onClick={clearChat} disabled={isEmpty && !error}>
           <Trash2 size={16} aria-hidden="true" />
           <span>Clear chat</span>
