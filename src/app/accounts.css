@@ -431,7 +431,7 @@
 .hero {
   background:
     linear-gradient(95deg, rgba(15, 42, 71, 0.9) 0%, rgba(15, 42, 71, 0.72) 34%, rgba(15, 42, 71, 0.18) 62%, rgba(15, 42, 71, 0) 100%),
-    url("/campus.webp") right center / cover no-repeat,
+    
     var(--navy);
 }
 
@@ -452,7 +452,7 @@
   .hero {
     background:
       linear-gradient(180deg, rgba(15, 42, 71, 0.82) 0%, rgba(15, 42, 71, 0.7) 100%),
-      url("/campus.webp") center / cover no-repeat,
+      
       var(--navy);
   }
 }
@@ -553,5 +553,46 @@
   .logout-btn {
     padding: 0 8px;
     font-size: 13px;
+  }
+}
+
+/* Hero, final layout: text on a navy panel, the full campus photo beside it (nothing covers the photo). */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  background: linear-gradient(160deg, var(--navy) 0%, #16406e 100%);
+}
+
+.hero-inner {
+  order: 1;
+  min-height: 0;
+  max-width: none;
+  margin: 0;
+  justify-content: center;
+}
+
+.hero-photo {
+  order: 2;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  max-height: 520px;
+  object-fit: cover;
+  object-position: 50% 30%;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    background: linear-gradient(160deg, var(--navy) 0%, #16406e 100%);
+  }
+
+  .hero-photo {
+    order: 0;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 300px;
   }
 }

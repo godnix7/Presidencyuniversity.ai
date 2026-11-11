@@ -46,6 +46,7 @@ export default function HomePage() {
 
       <main>
         <section className="hero">
+          <img className="hero-photo" src="/campus.jpg" alt="Presidency University main entrance" width={1200} height={675} />
           <div className="hero-inner">
             <p className="hero-eyebrow">Your university. One intelligent helpdesk.</p>
             <h1>Welcome to Presidency University CampusDesk AI</h1>
