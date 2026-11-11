@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AccountLinks from "@/components/AccountLinks";
 import {
   ArrowRight,
   Briefcase,
@@ -38,9 +39,8 @@ export default function HomePage() {
         <nav aria-label="Main">
           <a href="#topics">Help topics</a>
           <a href="#about">About</a>
-          <Link href="/helpdesk" className="home-nav-cta">
-            Open helpdesk
-          </Link>
+          <Link href="/helpdesk">Helpdesk</Link>
+          <AccountLinks cta />
         </nav>
       </header>
 

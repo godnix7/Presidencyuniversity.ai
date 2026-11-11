@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { getSupabase, useUser } from "@/lib/supabase";
 import {
   AlertCircle,
   BookOpen,
@@ -16,6 +18,7 @@ import {
   Library,
   RotateCcw,
   SendHorizontal,
+  SquarePen,
   Trash2,
   type LucideIcon,
 } from "lucide-react";
@@ -66,7 +69,16 @@ function newId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-export default function Helpdesk({ initialQuestion }: { initialQuestion?: string }) {
+interface Props {
+  initialQuestion?: string;
+  /** Id of a saved conversation to reopen (signed-in students only). */
+  conversationId?: string;
+}
+
+export default function Helpdesk({ initialQuestion, conversationId }: Props) {
+  const { user, loading: userLoading } = useUser();
+  const convId = useRef<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -80,6 +92,71 @@ export default function Helpdesk({ initialQuestion }: { initialQuestion?: string
     if (messages.length === 0 && !loading && !error) return;
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, loading, error]);
+
+  /** Saves one message for a signed-in student. Guests are not saved. Failures never block the chat. */
+  async function persist(message: Message) {
+    const supabase = getSupabase();
+    if (!supabase || !user) return;
+    try {
+      if (!convId.current) {
+        const { data, error } = await supabase
+          .from("conversations")
+          .insert({ title: message.content.slice(0, 70) })
+          .select("id")
+          .single();
+        if (error) throw error;
+        convId.current = data.id;
+      }
+      const { error } = await supabase.from("messages").insert({
+        conversation_id: convId.current,
+        role: message.role,
+        content: message.content,
+        category: message.category ?? null,
+        answerable: message.answerable ?? null,
+        sources: message.sources ?? null,
+      });
+      if (error) throw error;
+      if (message.role === "assistant") {
+        await supabase
+          .from("conversations")
+          .update({ preview: message.content.slice(0, 140), updated_at: new Date().toISOString() })
+          .eq("id", convId.current);
+      }
+      setSaveError(null);
+    } catch {
+      setSaveError("This conversation could not be saved to your history. You can keep chatting.");
+    }
+  }
+
+  // Reopen a saved conversation chosen on the dashboard.
+  useEffect(() => {
+    const supabase = getSupabase();
+    if (!conversationId || !supabase || !user || convId.current === conversationId) return;
+    convId.current = conversationId;
+    supabase
+      .from("messages")
+      .select("id, role, content, category, answerable, sources, created_at")
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: true })
+      .then(({ data, error }) => {
+        if (error || !data || data.length === 0) {
+          convId.current = null;
+          setError("That conversation could not be opened.");
+          return;
+        }
+        setMessages(
+          data.map((row) => ({
+            id: row.id,
+            role: row.role,
+            content: row.content,
+            time: new Date(row.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            category: row.category ?? undefined,
+            answerable: row.answerable ?? undefined,
+            sources: row.sources ?? [],
+          })),
+        );
+      });
+  }, [conversationId, user]);
 
   /** Sends the conversation to the server. `history` must end with the student's question. */
   async function requestAnswer(history: Message[]) {
@@ -99,18 +176,17 @@ export default function Helpdesk({ initialQuestion }: { initialQuestion?: string
       if (!res.ok || !data?.answer) {
         throw new Error(data?.error ?? "The helpdesk could not answer right now. Please try again.");
       }
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: newId(),
-          role: "assistant",
-          content: data.answer,
-          time: now(),
-          category: data.category,
-          answerable: data.answerable,
-          sources: data.sources ?? [],
-        },
-      ]);
+      const reply: Message = {
+        id: newId(),
+        role: "assistant",
+        content: data.answer,
+        time: now(),
+        category: data.category,
+        answerable: data.answerable,
+        sources: data.sources ?? [],
+      };
+      setMessages((prev) => [...prev, reply]);
+      await persist(reply);
       if (typeof data.category === "string") setActiveCategory(data.category);
     } catch (err) {
       setError(
@@ -129,19 +205,21 @@ export default function Helpdesk({ initialQuestion }: { initialQuestion?: string
   function ask(text: string) {
     const question = text.trim();
     if (!question || loading) return;
-    const next: Message[] = [...messages, { id: newId(), role: "user", content: question, time: now() }];
+    const mine: Message = { id: newId(), role: "user", content: question, time: now() };
+    const next: Message[] = [...messages, mine];
     setMessages(next);
     setInput("");
-    void requestAnswer(next);
+    setLoading(true);
+    void persist(mine).then(() => requestAnswer(next));
   }
 
   // A topic chosen on the homepage arrives as ?q=... and is asked once.
   useEffect(() => {
-    if (!initialQuestion || askedInitial.current) return;
+    if (!initialQuestion || askedInitial.current || userLoading) return;
     askedInitial.current = true;
     ask(initialQuestion);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialQuestion]);
+  }, [initialQuestion, userLoading]);
 
   function retry() {
     if (loading || messages.length === 0 || messages[messages.length - 1].role !== "user") return;
@@ -153,6 +231,8 @@ export default function Helpdesk({ initialQuestion }: { initialQuestion?: string
     setError(null);
     setInput("");
     setActiveCategory(null);
+    setSaveError(null);
+    convId.current = null;
     inputRef.current?.focus();
   }
 
@@ -169,10 +249,23 @@ export default function Helpdesk({ initialQuestion }: { initialQuestion?: string
             <span className="brand-sub">Ask, learn, get help</span>
           </div>
         </a>
-        <button type="button" className="btn btn-ghost" aria-label="Clear chat" onClick={clearChat} disabled={isEmpty && !error}>
-          <Trash2 size={16} aria-hidden="true" />
-          <span>Clear chat</span>
-        </button>
+        <div className="topbar-actions">
+          {!userLoading && (
+            <Link href={user ? "/dashboard" : "/login"} className="account-link">
+              {user ? "Dashboard" : "Log in"}
+            </Link>
+          )}
+          <button
+            type="button"
+            className="btn btn-ghost"
+            aria-label={user ? "New chat" : "Clear chat"}
+            onClick={clearChat}
+            disabled={isEmpty && !error}
+          >
+            {user ? <SquarePen size={16} aria-hidden="true" /> : <Trash2 size={16} aria-hidden="true" />}
+            <span>{user ? "New chat" : "Clear chat"}</span>
+          </button>
+        </div>
       </header>
 
       <div className="shell">
@@ -298,6 +391,12 @@ export default function Helpdesk({ initialQuestion }: { initialQuestion?: string
                   Try again
                 </button>
               </div>
+            )}
+            {saveError && (
+              <p className="save-note" role="status">
+                <AlertCircle size={14} aria-hidden="true" />
+                {saveError}
+              </p>
             )}
             <div ref={endRef} />
           </div>

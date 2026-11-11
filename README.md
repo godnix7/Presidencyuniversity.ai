@@ -39,9 +39,19 @@ Two clearly separated parts:
 
 The sample data is competition data, not an official statement of university regulations.
 
+## Student accounts (optional)
+
+Sign-up, login, logout, email verification, password reset, a protected dashboard and saved conversation history use **Supabase Auth** and two tables protected by row level security. The helpdesk also works for guests without an account.
+
+1. Create a Supabase project and run `supabase/schema.sql` in its SQL editor.
+2. In Authentication > URL Configuration, add `http://localhost:3000/login` and `http://localhost:3000/reset-password` as redirect URLs.
+3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env.local`.
+
+Passwords need at least 8 characters; there are no other password rules. Without these settings the account pages show a clear "not configured" message and the guest helpdesk still works.
+
 ## Tech stack
 
-Next.js 16 (App Router, Route Handlers) · React 19 · TypeScript · Zod · Lucide icons · plain CSS with design tokens. No database, no authentication.
+Next.js 16 (App Router, Route Handlers) · React 19 · TypeScript · Zod · Lucide icons · plain CSS with design tokens. Supabase (optional) for accounts and saved conversations.
 
 ```
 src/
@@ -89,7 +99,8 @@ Open http://localhost:3000 for the homepage; the chat is at /helpdesk.
 
 - The retriever is lexical (BM25), not embedding-based; with a 21-chunk corpus this is sufficient and needs no extra service.
 - Website data is a small snapshot, not a live crawl.
-- Conversations are kept in the browser session only.
+- Guest conversations are kept in the browser session only; signed-in conversations are saved to Supabase.
+- The hero photograph of the campus was taken from a third-party web page, not from the university; replace it if you publish this beyond the competition.
 
 ## AI tools disclosure
 
